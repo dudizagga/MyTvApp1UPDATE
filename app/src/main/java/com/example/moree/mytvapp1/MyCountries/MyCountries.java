@@ -362,6 +362,7 @@ public class MyCountries extends Fragment {
                     if (utlShared.checkKey(SaveLink)) {
                         bookmarks.setTextColor(Color.YELLOW);
                         pd1.dismiss();
+                        mysingleAlert.dismiss();
                         return;
                     } else {
                         utlShared.AddUser(SaveLink,SavePic);

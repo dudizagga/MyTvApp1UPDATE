@@ -149,22 +149,7 @@ public class Panel extends Fragment {
         reload.show();
     }
 
-    //for show only but not used
-    private void GetWifiNetworks() {
 
-        List<ScanResult> wifilist = wifiManager.getScanResults();
-        AlertDialog.Builder wifi = new AlertDialog.Builder(context);
-        wifi.setTitle("Wifi List");
-        View inflate = LayoutInflater.from(context).inflate(R.layout.wifi_list, null, false);
-        ListView Listwifi = (ListView) inflate.findViewById(R.id.wifilist);
-        // ListView Wifilist=new ListView(context);
-        WifiAdapter wifiAdaper = new WifiAdapter(context, wifilist);
-        //Wifilist.setAdapter(wifiAdaper);
-        Listwifi.setAdapter(wifiAdaper);
-        wifi.setView(inflate);
-        wifi.show();
-
-    }
 
 
 }

@@ -16,6 +16,7 @@ import com.backendless.Backendless;
 import com.backendless.BackendlessCollection;
 import com.backendless.async.callback.AsyncCallback;
 import com.backendless.exceptions.BackendlessFault;
+import com.example.moree.mytvapp1.MyCountries.MyCountries;
 import com.example.moree.mytvapp1.MyCountries.MyCountryAdapter;
 import com.example.moree.mytvapp1.R;
 import com.example.moree.mytvapp1.Video;
@@ -29,15 +30,17 @@ import java.util.ArrayList;
 
 public class NewsChannels extends Fragment {
     Context context;
-    ArrayList<String> link;
     ArrayList<String> getNewsPics=new ArrayList<>();
+    ArrayList<String> getNewsLinks=new ArrayList<>();
     ArrayList<String> getNewsNames=new ArrayList<>();
     public GridView listNews;
+    MyCountries myCountries;
     @Nullable
     @Override
     public View onCreateView(final LayoutInflater inflater, @Nullable final ViewGroup container, Bundle savedInstanceState) {
         context = container.getContext();
         getNewsData();
+        myCountries=new MyCountries();
         Toast.makeText(context, "News", Toast.LENGTH_SHORT).show();
         View movInf = inflater.inflate(R.layout.activity_categories, container, false);
         listNews = (GridView) movInf.findViewById(R.id.TvShow);
@@ -48,17 +51,25 @@ public class NewsChannels extends Fragment {
 
 
                 Intent intent = new Intent(context,Video.class);
-                intent.putExtra("link",getNewsNames.get(i));
+                intent.putExtra("link",getNewsLinks.get(i));
                 context.startActivity(intent);
 
             }
 
         });
+       listNews.setOnItemLongClickListener(new AdapterView.OnItemLongClickListener() {
+           @Override
+           public boolean onItemLongClick(AdapterView<?> parent, View view, int position, long id) {
+               myCountries.MyAlertDialog2(context,getNewsNames.get(position),getNewsPics.get(position));
+               return false;
+           }
+       });
 
 
         return movInf;
 
     }
+
     private void getNewsData()
     {
         Backendless.Persistence.of(NewsData.class).find(new AsyncCallback<BackendlessCollection<NewsData>>() {
@@ -66,8 +77,9 @@ public class NewsChannels extends Fragment {
             public void handleResponse(BackendlessCollection<NewsData> response) {
                 for (NewsData item:response.getData())
                 {
-                    getNewsNames.add(item.NewsChannel_Link);
+                    getNewsLinks.add(item.NewsChannel_Link);
                     getNewsPics.add(item.NewsChannel_Pic);
+                    getNewsNames.add(item.News_Names);
                 }
                 listNews.setAdapter(new MyCountryAdapter(context,getNewsPics,getNewsNames));
            return;

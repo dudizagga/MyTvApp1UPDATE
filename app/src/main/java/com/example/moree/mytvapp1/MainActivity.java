@@ -4,6 +4,7 @@ import android.content.Context;
 import android.content.DialogInterface;
 import android.content.Intent;
 import android.os.Bundle;
+import android.support.v4.app.FragmentContainer;
 import android.support.v7.app.AlertDialog;
 import android.support.v7.app.AppCompatActivity;
 import android.view.LayoutInflater;
@@ -16,8 +17,12 @@ import com.backendless.Backendless;
 import com.backendless.BackendlessUser;
 import com.backendless.async.callback.AsyncCallback;
 import com.backendless.async.callback.BackendlessCallback;
+import com.backendless.exceptions.BackendlessException;
 import com.backendless.exceptions.BackendlessFault;
 import com.backendless.persistence.BackendlessDataQuery;
+import com.backendless.property.UserProperty;
+
+import java.util.List;
 
 public class MainActivity extends AppCompatActivity {
     Context context;
@@ -59,11 +64,37 @@ public class MainActivity extends AppCompatActivity {
     }
 
     private void Login() {
-        String Myuser = userId.getText().toString();
-        String Mypass = usePass.getText().toString();
+        final String Myuser = userId.getText().toString();
+        final String MyPass = usePass.getText().toString();
 
-        Intent First = new Intent(context, Fragmentcontainer.class);
-        startActivity(First);
+        /*Intent First = new Intent(context, Fragmentcontainer.class);
+        startActivity(First);*/
+
+
+//        try
+//        {
+//            BackendlessUser user=Backendless.UserService.login(Myuser,MyPass);
+//        }
+//        catch( BackendlessException exception )
+//        {
+//            // login failed, to get the error code, call exception.getFault().getCode()
+//            Toast.makeText(context, "Exception: "+exception, Toast.LENGTH_SHORT).show();
+//        }
+
+
+
+        Backendless.UserService.login(Myuser , MyPass, new AsyncCallback<BackendlessUser>() {
+            @Override
+            public void handleResponse(BackendlessUser response) {
+                Toast.makeText(context, "Logged"+Myuser, Toast.LENGTH_SHORT).show();
+                startActivity(new Intent(context,Fragmentcontainer.class));
+            }
+
+            @Override
+            public void handleFault(BackendlessFault fault) {
+                Toast.makeText(context, "Error: " + fault.getMessage(), Toast.LENGTH_SHORT).show();
+            }
+        });
 /*
         if (userId.getText().toString().length()<1 && usePass.getText().toString().length()<1)
         {
@@ -107,7 +138,7 @@ public class MainActivity extends AppCompatActivity {
             @Override
             public void onClick(View v) {
                 if (username.getText().toString().isEmpty() || username.getText().toString().length() < 4) {
-                    username.setError("at Least 4 character");
+                    username.setError("Enter your E-mail please");
                 } else if (userpass1.getText().toString().length() < 6 || userpass1.getText().toString().isEmpty()) {
                     userpass1.setError("Password needs 6 characters and more");
                 } else if (!userpass1.getText().toString().equals(userpass2.getText().toString())) {
@@ -115,8 +146,8 @@ public class MainActivity extends AppCompatActivity {
                 } else {
 
                     BackendlessUser RegisterUser = new BackendlessUser();
-                    RegisterUser.setProperty("email", username.getText().toString());
-                    RegisterUser.setProperty("password", userpass1.getText().toString());
+                    RegisterUser.setEmail(username.getText().toString());
+                    RegisterUser.setPassword(userpass1.getText().toString());
                     Backendless.UserService.register(RegisterUser, new AsyncCallback<BackendlessUser>() {
                         @Override
                         public void handleResponse(BackendlessUser response) {
