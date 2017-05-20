@@ -32,6 +32,7 @@ public class MusicChannels extends Fragment {
     ArrayList<String> link;
     ArrayList<String> getMusicPics=new ArrayList<>();
     ArrayList<String> getMusicNames=new ArrayList<>();
+    ArrayList<String> getMusicLinks=new ArrayList<>();
     public GridView listMusic;
 
     @Nullable
@@ -50,7 +51,7 @@ public class MusicChannels extends Fragment {
 
 
                 Intent intent = new Intent(context,Video.class);
-                intent.putExtra("link",getMusicNames.get(i));
+                intent.putExtra("link",getMusicLinks.get(i));
                 context.startActivity(intent);
 
             }
@@ -67,7 +68,7 @@ public class MusicChannels extends Fragment {
             public void handleResponse(BackendlessCollection<MusicData> response) {
                 for (MusicData item:response.getData())
                 {
-                    getMusicNames.add(item.MusicChannel_Link);
+                    getMusicNames.add(item.Music_Name);
                     getMusicPics.add(item.MusicChannel_Pic);
                 }
 
