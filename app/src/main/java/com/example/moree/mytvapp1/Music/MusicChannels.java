@@ -16,6 +16,7 @@ import com.backendless.Backendless;
 import com.backendless.BackendlessCollection;
 import com.backendless.async.callback.AsyncCallback;
 import com.backendless.exceptions.BackendlessFault;
+import com.example.moree.mytvapp1.MyCountries.MyCountries;
 import com.example.moree.mytvapp1.MyCountries.MyCountryAdapter;
 import com.example.moree.mytvapp1.R;
 import com.example.moree.mytvapp1.Video;
@@ -33,6 +34,7 @@ public class MusicChannels extends Fragment {
     ArrayList<String> getMusicPics=new ArrayList<>();
     ArrayList<String> getMusicNames=new ArrayList<>();
     ArrayList<String> getMusicLinks=new ArrayList<>();
+    MyCountries myCountries;
     public GridView listMusic;
 
     @Nullable
@@ -41,6 +43,7 @@ public class MusicChannels extends Fragment {
         context = container.getContext();
         Toast.makeText(context, "Music", Toast.LENGTH_SHORT).show();
        getMusicData();
+        myCountries = new MyCountries();
         // savedata();
         View movInf = inflater.inflate(R.layout.activity_categories, container, false);
            listMusic = (GridView) movInf.findViewById(R.id.TvShow);
@@ -57,8 +60,13 @@ public class MusicChannels extends Fragment {
             }
 
         });
-
-
+listMusic.setOnItemLongClickListener(new AdapterView.OnItemLongClickListener() {
+    @Override
+    public boolean onItemLongClick(AdapterView<?> parent, View view, int position, long id) {
+        myCountries.MyAlertDialog2(context,getMusicLinks.get(position),getMusicPics.get(position));
+        return false;
+    }
+});
         return movInf;
 
     }

@@ -7,5 +7,6 @@ package com.example.moree.mytvapp1.Movies;
 public class MoviesData {
     public String MoviesChannel_Link;
     public String MoviesChannel_Pic;
+    public String Movies_names;
 
 }

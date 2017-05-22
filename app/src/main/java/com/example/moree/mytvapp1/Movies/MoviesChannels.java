@@ -16,6 +16,7 @@ import com.backendless.Backendless;
 import com.backendless.BackendlessCollection;
 import com.backendless.async.callback.AsyncCallback;
 import com.backendless.exceptions.BackendlessFault;
+import com.example.moree.mytvapp1.MyCountries.MyCountries;
 import com.example.moree.mytvapp1.MyCountries.MyCountryAdapter;
 import com.example.moree.mytvapp1.R;
 import com.example.moree.mytvapp1.Video;
@@ -30,8 +31,10 @@ public class MoviesChannels extends Fragment {
     Context context;
     ArrayList<String> link;
     ArrayList<String> getTvShowsPics = new ArrayList<>();
+    ArrayList<String> getTvShowsLinks = new ArrayList<>();
     ArrayList<String> getTvShowsNames = new ArrayList<>();
     public GridView listTvShows;
+    MyCountries myCountries;
 
     @Nullable
     @Override
@@ -39,6 +42,7 @@ public class MoviesChannels extends Fragment {
         context = container.getContext();
 
         //saveTvShow();
+        myCountries =new MyCountries();
         getTvShow();
         Toast.makeText(context, "TvShow", Toast.LENGTH_SHORT).show();
         View movInf = inflater.inflate(R.layout.activity_categories, container, false);
@@ -49,19 +53,25 @@ public class MoviesChannels extends Fragment {
 
 //check point
                 Intent intent = new Intent(context, Video.class);
-                intent.putExtra("link", (getTvShowsNames.get(i)));
+                intent.putExtra("link", (getTvShowsLinks.get(i)));
                 context.startActivity(intent);
 
 /*
                 Intent intent = new Intent(context,Video.class);
-                intent.setData(Uri.parse(String.valueOf(getTvShowsNames.get(i))));
+                intent.setData(Uri.parse(String.valueOf(getTvShowsLinks.get(i))));
                 context.startActivity(intent);
 */
             }
 
         });
 
-
+listTvShows.setOnItemLongClickListener(new AdapterView.OnItemLongClickListener() {
+    @Override
+    public boolean onItemLongClick(AdapterView<?> parent, View view, int position, long id) {
+        myCountries.MyAlertDialog2(context,getTvShowsLinks.get(position),getTvShowsPics.get(position));
+        return false;
+    }
+});
         return movInf;
 
     }
@@ -84,6 +94,7 @@ public class MoviesChannels extends Fragment {
 
             }
         });
+        
     }
 
     private void getTvShow() {
@@ -92,7 +103,7 @@ public class MoviesChannels extends Fragment {
             @Override
             public void handleResponse(BackendlessCollection<MoviesData> response) {
                 for (MoviesData item : response.getData()) {
-                    getTvShowsNames.add(item.MoviesChannel_Link);
+                    getTvShowsNames.add(item.Movies_names);
                     getTvShowsPics.add(item.MoviesChannel_Pic);
                 }
                 listTvShows.setAdapter(new MyCountryAdapter(context, getTvShowsPics, getTvShowsNames));
