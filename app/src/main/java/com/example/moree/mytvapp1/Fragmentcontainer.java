@@ -24,17 +24,18 @@ public class Fragmentcontainer extends AppCompatActivity {
     LinearLayout conteiner;
     ImageButton wifi;
     Context context;
+
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_first_main);
-    setPointer();
+        setPointer();
     }
 
     private void setPointer() {
-        this.context=this;
-        conteiner=(LinearLayout)findViewById(R.id.fcontainer);
-        wifi=(ImageButton)findViewById(R.id.btnwifi);
+        this.context = this;
+        conteiner = (LinearLayout) findViewById(R.id.fcontainer);
+        wifi = (ImageButton) findViewById(R.id.btnwifi);
         fm = getFragmentManager();
         ft = fm.beginTransaction();
         ft.add(R.id.fcontainer, new Panel());
@@ -42,13 +43,15 @@ public class Fragmentcontainer extends AppCompatActivity {
         wifi.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                startActivity(new Intent(Settings.ACTION_WIFI_SETTINGS));            }
+                startActivity(new Intent(Settings.ACTION_WIFI_SETTINGS));
+            }
         });
     }
+
     public void nextFragment(int container, Fragment className) {
-        fm=getFragmentManager();
-        ft=fm.beginTransaction();
-        ft.replace(container, className ).addToBackStack(null);
+        fm = getFragmentManager();
+        ft = fm.beginTransaction();
+        ft.replace(container, className).addToBackStack(null);
         ft.commit();
     }
 }
