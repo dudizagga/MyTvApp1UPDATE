@@ -7,6 +7,10 @@
         <item name="colorPrimaryDark">@color/colorPrimaryDark</item>
         <item name="colorAccent">@color/colorAccent</item>
     </style>
+    <style name="error_appearance" parent="@android:style/TextAppearance">
+        <item name="android:textColor">@color/Red</item>
+        <item name="android:textSize">12sp</item>
+    </style>
     <style name="TV_Shows">
 
         <item name="android:textStyle">bold</item>

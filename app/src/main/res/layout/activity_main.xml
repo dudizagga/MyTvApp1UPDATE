@@ -21,13 +21,22 @@
         android:layout_height="wrap_content"
         android:orientation="vertical">
 
-
+<android.support.design.widget.TextInputLayout
+    android:layout_width="match_parent"
+    android:layout_height="wrap_content"
+    android:id="@+id/Input_Email">
         <EditText
             android:id="@+id/userName"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:hint="Enter Name"
+            android:hint="Enter you E-mail"
             android:inputType="textEmailAddress"/>
+        </android.support.design.widget.TextInputLayout>
+
+        <android.support.design.widget.TextInputLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:id="@+id/Input_pass">
         <EditText
             android:id="@+id/usePass"
             android:layout_width="match_parent"
@@ -36,21 +45,24 @@
             android:hint="Enter Password"
             android:padding="10dp"
             android:inputType="textPassword"/>
-
+</android.support.design.widget.TextInputLayout>
     </LinearLayout>
 
     <LinearLayout
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:orientation="horizontal"
-        android:gravity="center">
+        android:gravity="center"
+        android:layoutDirection="rtl">
 
         <Button
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:text="Login"
             android:id="@+id/btnLogin"/>
-
+<LinearLayout
+    android:layout_width="100dp"
+    android:layout_height="wrap_content"/>
         <Button
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
