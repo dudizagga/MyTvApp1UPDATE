@@ -48,7 +48,6 @@ private SharedPreferences.Editor editor;
     }
     public boolean getBol( boolean bol){
        boolean b =  MyFavoriteData.getBoolean("b",bol);
-
         return b;
     }
 
