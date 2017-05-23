@@ -21,6 +21,8 @@ import android.widget.LinearLayout;
 import android.widget.ListView;
 import android.widget.Toast;
 
+import com.backendless.Backendless;
+import com.backendless.BackendlessUser;
 import com.example.moree.mytvapp1.Catagory.Categories;
 import com.example.moree.mytvapp1.MyCountries.MyCountries;
 import com.example.moree.mytvapp1.MyFavorite.Favorite;
@@ -39,7 +41,8 @@ public class Panel extends Fragment {
     public NetworkInfo activeNetwork;
     public ProgressDialog resetNetwork;
     Fragmentcontainer fragmentcontainer;
-
+    utlShared ut;
+MainActivity activity;
     public Panel() {
     }
 
@@ -86,6 +89,10 @@ public class Panel extends Fragment {
         btnLogout.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
+                ut = new utlShared(context);
+                activity = new MainActivity();
+                activity.logged = ut.putBol(false);
+                startActivity(new Intent(context,MainActivity.class));
                 Toast.makeText(context, "Logout", Toast.LENGTH_SHORT).show();
             }
         });

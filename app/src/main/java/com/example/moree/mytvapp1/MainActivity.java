@@ -23,18 +23,23 @@ import com.backendless.BackendlessUser;
 import com.backendless.async.callback.AsyncCallback;
 import com.backendless.exceptions.BackendlessException;
 import com.backendless.exceptions.BackendlessFault;
+import com.backendless.persistence.local.UserTokenStorageFactory;
 
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;
 
 import weborb.client.Fault;
 
+
 public class MainActivity extends AppCompatActivity {
     Context context;
     EditText userId, usePass;
     Button Login, register;
+    utlShared ut ;
     Fragmentcontainer fragmentcontainer;
     TextInputLayout input_Email, input_pass;
+    public boolean logged ;
+
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -45,14 +50,17 @@ public class MainActivity extends AppCompatActivity {
 
     }
 
-    private void setPointer() {
+    protected void setPointer() {
         this.context = this;
+        //Staylogged();
         userId = (EditText) findViewById(R.id.userName);
         usePass = (EditText) findViewById(R.id.usePass);
         Login = (Button) findViewById(R.id.btnLogin);
         register = (Button) findViewById(R.id.InRegister);
         input_Email = (TextInputLayout) findViewById(R.id.Input_Email);
         input_pass = (TextInputLayout) findViewById(R.id.Input_pass);
+        ut =new utlShared(context);
+        logged = ut.getBol(false);
         fragmentcontainer = new Fragmentcontainer();
         Login.setOnClickListener(new View.OnClickListener() {
             @Override
@@ -66,13 +74,44 @@ public class MainActivity extends AppCompatActivity {
                 Register();
             }
         });
+        logi();
+
+    }
+    public void logi(){
+        if (logged == true){
+            Staylogged();
+            Toast.makeText(context, "log is true ", Toast.LENGTH_SHORT).show();
+        }
+        else{
+            Toast.makeText(context, "log is false ", Toast.LENGTH_SHORT).show();
+        }
     }
 
 
+protected void Staylogged() {
 
-    private void Login() {
-        String Myuser = userId.getText().toString();
-        String Mypass = usePass.getText().toString();
+    AsyncCallback<Boolean> isValidLoginCallback = new AsyncCallback<Boolean>() {
+        @Override
+        public void handleResponse(Boolean response) {
+            Toast.makeText(context, "" + response.booleanValue(), Toast.LENGTH_SHORT).show();
+            startActivity(new Intent(context, Fragmentcontainer.class));
+            //Toast.makeText(context, "[ASYNC] Is login valid? - " + response, Toast.LENGTH_SHORT).show();
+        }
+
+        @Override
+        public void handleFault(BackendlessFault fault) {
+            Toast.makeText(context, "Error - " + fault, Toast.LENGTH_SHORT).show();
+        }
+
+    };
+
+
+    Backendless.UserService.isValidLogin(isValidLoginCallback);
+
+}
+    protected void Login() {
+        final String Myuser = userId.getText().toString();
+        final String Mypass = usePass.getText().toString();
 
         if (userId.getText().toString().length() < 1 && usePass.getText().toString().length() < 1) {
             input_Email.setErrorTextAppearance(R.style.error_appearance);
@@ -85,8 +124,12 @@ public class MainActivity extends AppCompatActivity {
             Backendless.UserService.login(Myuser, Mypass, new AsyncCallback<BackendlessUser>() {
                 @Override
                 public void handleResponse(BackendlessUser response) {
+
                     Intent First = new Intent(context, Fragmentcontainer.class);
                     startActivity(First);
+
+                  logged=  ut.putBol(true);
+                    Toast.makeText(context, "logged: "+ ut.putBol(true), Toast.LENGTH_SHORT).show();
                 }
 
                 @Override
@@ -100,12 +143,45 @@ public class MainActivity extends AppCompatActivity {
                         Toast.makeText(context, "Network Error ", Toast.LENGTH_SHORT).show();
                     }
                 }
-            });
+            }, logged= ut.getBol(true)  );
         } catch (Exception e) {
             Toast.makeText(context, "Error: " + e.getMessage(), Toast.LENGTH_SHORT).show();
         }
 
+
     }
+protected void logOut() {
+
+}
+  /* Backendless.initApp( "B69DDA46-E458-378B-FF0E-F5F182F4A800", "B506595D-64F7-320B-FF90-227125992900", "v1" ); // where to get the argument values for this call
+    Backendless.UserService.login( BackendlessUser.EMAIL_KEY, BackendlessUser.PASSWORD_KEY, new AsyncCallback<BackendlessUser>()
+    {
+        public void handleResponse( BackendlessUser user )
+        {
+            // user has been logged in
+            // now, let's logout
+            Backendless.UserService.logout( new AsyncCallback<Void>()
+            {
+                public void handleResponse( Void response )
+                {
+
+                }
+
+                public void handleFault( BackendlessFault fault )
+                {
+                    // something went wrong and logout failed, to get the error code call fault.getCode()
+                }
+            });
+        }
+
+
+        public void handleFault( BackendlessFault fault )
+        {
+            // login failed, to get the error code call fault.getCode()
+        }
+    });
+}*/
+
 
 
     private void Register() {

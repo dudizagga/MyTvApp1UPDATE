@@ -40,6 +40,18 @@ private SharedPreferences.Editor editor;
         editor.remove(key);
         editor.commit();
     }
+    public boolean putBol( boolean bol){
+        editor.putBoolean("b",bol);
+        editor.commit();
+
+        return bol;
+    }
+    public boolean getBol( boolean bol){
+       boolean b =  MyFavoriteData.getBoolean("b",bol);
+
+        return b;
+    }
+
 }
 
 
