@@ -50,7 +50,14 @@ private SharedPreferences.Editor editor;
        boolean b =  MyFavoriteData.getBoolean("b",bol);
         return b;
     }
-
+    public void putId(String ownId){
+        editor.putString("own",ownId);
+        editor.commit();
+    }
+    public String getId( String ownId){
+        String c =MyFavoriteData.getString("own", ownId);
+        return c;
+    }
 }
 
 

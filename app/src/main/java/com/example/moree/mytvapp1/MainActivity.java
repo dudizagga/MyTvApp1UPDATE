@@ -35,10 +35,10 @@ public class MainActivity extends AppCompatActivity {
     Context context;
     EditText userId, usePass;
     Button Login, register;
-    utlShared ut ;
+    utlShared ut;
     Fragmentcontainer fragmentcontainer;
     TextInputLayout input_Email, input_pass;
-    public boolean logged ;
+    public boolean logged;
 
 
     @Override
@@ -52,14 +52,14 @@ public class MainActivity extends AppCompatActivity {
 
     protected void setPointer() {
         this.context = this;
-        //Staylogged();
+        //StayLogged();
         userId = (EditText) findViewById(R.id.userName);
         usePass = (EditText) findViewById(R.id.usePass);
         Login = (Button) findViewById(R.id.btnLogin);
         register = (Button) findViewById(R.id.InRegister);
         input_Email = (TextInputLayout) findViewById(R.id.Input_Email);
         input_pass = (TextInputLayout) findViewById(R.id.Input_pass);
-        ut =new utlShared(context);
+        ut = new utlShared(context);
         logged = ut.getBol(false);
         fragmentcontainer = new Fragmentcontainer();
         Login.setOnClickListener(new View.OnClickListener() {
@@ -77,38 +77,39 @@ public class MainActivity extends AppCompatActivity {
         logi();
 
     }
-    public void logi(){
-        if (logged == true){
-            Staylogged();
+
+    public void logi() {
+        if (logged == true) {
+            StayLogged();
             Toast.makeText(context, "log is true ", Toast.LENGTH_SHORT).show();
-        }
-        else{
+        } else {
             Toast.makeText(context, "log is false ", Toast.LENGTH_SHORT).show();
         }
     }
 
 
-protected void Staylogged() {
+    protected void StayLogged() {
 
-    AsyncCallback<Boolean> isValidLoginCallback = new AsyncCallback<Boolean>() {
-        @Override
-        public void handleResponse(Boolean response) {
-            Toast.makeText(context, "" + response.booleanValue(), Toast.LENGTH_SHORT).show();
-            startActivity(new Intent(context, Fragmentcontainer.class));
-            //Toast.makeText(context, "[ASYNC] Is login valid? - " + response, Toast.LENGTH_SHORT).show();
-        }
+        AsyncCallback<Boolean> isValidLoginCallback = new AsyncCallback<Boolean>() {
+            @Override
+            public void handleResponse(Boolean response) {
+                Toast.makeText(context, "" + response.booleanValue(), Toast.LENGTH_SHORT).show();
+                startActivity(new Intent(context, Fragmentcontainer.class));
+                //Toast.makeText(context, "[ASYNC] Is login valid? - " + response, Toast.LENGTH_SHORT).show();
+            }
 
-        @Override
-        public void handleFault(BackendlessFault fault) {
-            Toast.makeText(context, "Error - " + fault, Toast.LENGTH_SHORT).show();
-        }
+            @Override
+            public void handleFault(BackendlessFault fault) {
+                Toast.makeText(context, "Error - hadfault", Toast.LENGTH_SHORT).show();
+            }
 
-    };
+        };
 
 
-    Backendless.UserService.isValidLogin(isValidLoginCallback);
+        Backendless.UserService.isValidLogin(isValidLoginCallback);
 
-}
+    }
+
     protected void Login() {
         final String Myuser = userId.getText().toString();
         final String Mypass = usePass.getText().toString();
@@ -124,12 +125,14 @@ protected void Staylogged() {
             Backendless.UserService.login(Myuser, Mypass, new AsyncCallback<BackendlessUser>() {
                 @Override
                 public void handleResponse(BackendlessUser response) {
-
+                    String a = Backendless.UserService.CurrentUser().getUserId();
+                    ut.putId(a);
+                    Toast.makeText(context, "my user id : "+a, Toast.LENGTH_SHORT).show();
                     Intent First = new Intent(context, Fragmentcontainer.class);
                     startActivity(First);
 
-                  logged=  ut.putBol(true);
-                    Toast.makeText(context, "logged: "+ ut.putBol(true), Toast.LENGTH_SHORT).show();
+                    logged = ut.putBol(true);
+                    Toast.makeText(context, "logged: " + ut.putBol(true), Toast.LENGTH_SHORT).show();
                 }
 
                 @Override
@@ -143,16 +146,17 @@ protected void Staylogged() {
                         Toast.makeText(context, "Network Error ", Toast.LENGTH_SHORT).show();
                     }
                 }
-            }, logged= ut.getBol(true)  );
+            }, logged = ut.getBol(true));
         } catch (Exception e) {
             Toast.makeText(context, "Error: " + e.getMessage(), Toast.LENGTH_SHORT).show();
         }
 
 
     }
-protected void logOut() {
 
-}
+    protected void logOut() {
+
+    }
   /* Backendless.initApp( "B69DDA46-E458-378B-FF0E-F5F182F4A800", "B506595D-64F7-320B-FF90-227125992900", "v1" ); // where to get the argument values for this call
     Backendless.UserService.login( BackendlessUser.EMAIL_KEY, BackendlessUser.PASSWORD_KEY, new AsyncCallback<BackendlessUser>()
     {
@@ -181,7 +185,6 @@ protected void logOut() {
         }
     });
 }*/
-
 
 
     private void Register() {
