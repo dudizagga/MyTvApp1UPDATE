@@ -30,9 +30,9 @@ import java.util.ArrayList;
 
 public class NewsChannels extends Fragment {
     Context context;
-    ArrayList<String> getNewsPics=new ArrayList<>();
-    ArrayList<String> getNewsLinks=new ArrayList<>();
-    ArrayList<String> getNewsNames=new ArrayList<>();
+    ArrayList<String> getNewsPics = new ArrayList<>();
+    ArrayList<String> getNewsLinks = new ArrayList<>();
+    ArrayList<String> getNewsNames = new ArrayList<>();
     public GridView listNews;
     MyCountries myCountries;
     @Nullable
@@ -40,49 +40,35 @@ public class NewsChannels extends Fragment {
     public View onCreateView(final LayoutInflater inflater, @Nullable final ViewGroup container, Bundle savedInstanceState) {
         context = container.getContext();
         getNewsData();
-        myCountries=new MyCountries();
+        myCountries = new MyCountries();
         Toast.makeText(context, "News", Toast.LENGTH_SHORT).show();
         View movInf = inflater.inflate(R.layout.activity_categories, container, false);
         listNews = (GridView) movInf.findViewById(R.id.TvShow);
         listNews.setOnItemClickListener(new AdapterView.OnItemClickListener() {
             @Override
             public void onItemClick(AdapterView<?> adapterView, View view, int i, long l) {
-
-
-
-                Intent intent = new Intent(context,Video.class);
-                intent.putExtra("link",getNewsLinks.get(i));
-                context.startActivity(intent);
+myCountries.MyAlertDialog1(context,getNewsLinks.get(i),getNewsPics.get(i));
 
             }
 
         });
-       listNews.setOnItemLongClickListener(new AdapterView.OnItemLongClickListener() {
-           @Override
-           public boolean onItemLongClick(AdapterView<?> parent, View view, int position, long id) {
-               myCountries.MyAlertDialog2(context,getNewsNames.get(position),getNewsPics.get(position));
-               return false;
-           }
-       });
 
 
         return movInf;
 
     }
 
-    private void getNewsData()
-    {
+    private void getNewsData() {
         Backendless.Persistence.of(NewsData.class).find(new AsyncCallback<BackendlessCollection<NewsData>>() {
             @Override
             public void handleResponse(BackendlessCollection<NewsData> response) {
-                for (NewsData item:response.getData())
-                {
+                for (NewsData item : response.getData()) {
                     getNewsLinks.add(item.NewsChannel_Link);
                     getNewsPics.add(item.NewsChannel_Pic);
                     getNewsNames.add(item.News_Names);
                 }
-                listNews.setAdapter(new MyCountryAdapter(context,getNewsPics,getNewsNames));
-           return;
+                listNews.setAdapter(new MyCountryAdapter(context, getNewsPics, getNewsNames));
+                return;
             }
 
             @Override

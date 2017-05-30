@@ -43,6 +43,7 @@ public class SerbiaChannels extends Fragment {
         Serlink.clear();
         SerPics1.clear();
         Get_SerData();
+        myCountries = new MyCountries();
         context = container.getContext();
         View SERChannelInf = inflater.inflate(R.layout.my_grid_view, container, false);
         final GridView myGBList = (GridView) SERChannelInf.findViewById(R.id.MyGridView);
@@ -50,6 +51,7 @@ public class SerbiaChannels extends Fragment {
         myGBList.setOnItemClickListener(new AdapterView.OnItemClickListener() {
             @Override
             public void onItemClick(AdapterView<?> adapterView, View view, int i, long l) {
+                myCountries.MyAlertDialog1(context,Serlink.get(i),SerPics1.get(i));
                 //sport
                 /*
                 link.add("http://1.442244.info/ser_arena_sport_1/index.m3u8");
@@ -58,19 +60,12 @@ public class SerbiaChannels extends Fragment {
                 link.add("http://1.442244.info/ser_arena_sport_4/index.m3u8");
                 link.add("http://1.442244.info/ser_arena_sport_5/index.m3u8");
                 */
-                //news
-                //music
-                Intent intent = new Intent(context, Video.class);
-                intent.putExtra("link", ((Serlink.get(i))));
-                context.startActivity(intent);
+
             }
         });
         myGBList.setOnItemLongClickListener(new AdapterView.OnItemLongClickListener() {
             @Override
             public boolean onItemLongClick(AdapterView<?> parent, View view, int position, long id) {
-                myCountries = new MyCountries();
-                Favorite favorite = new Favorite();
-                myCountries.MyAlertDialog1(context, Serlink.get(position), SerPics1.get(position), SerPics1.get(position),Serlink.get(position));
                 return false;
             }
 

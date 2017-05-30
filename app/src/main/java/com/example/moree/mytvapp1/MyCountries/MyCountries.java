@@ -3,11 +3,14 @@ package com.example.moree.mytvapp1.MyCountries;
 import android.app.Fragment;
 import android.app.ProgressDialog;
 import android.content.Context;
+import android.content.DialogInterface;
+import android.content.Intent;
 import android.content.SharedPreferences;
 import android.graphics.Color;
 import android.os.Bundle;
 import android.support.annotation.Nullable;
 import android.support.v7.app.AlertDialog;
+import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -30,6 +33,7 @@ import com.example.moree.mytvapp1.Europ.EUChannels;
 import com.example.moree.mytvapp1.Fragmentcontainer;
 import com.example.moree.mytvapp1.Israel.IsraelChannels;
 import com.example.moree.mytvapp1.Italy.ItalyChannels;
+import com.example.moree.mytvapp1.MainActivity;
 import com.example.moree.mytvapp1.MyFavorite.FavoriteData;
 import com.example.moree.mytvapp1.Panel;
 import com.example.moree.mytvapp1.R;
@@ -37,6 +41,7 @@ import com.example.moree.mytvapp1.Russia.RusChannels;
 import com.example.moree.mytvapp1.Spain.SpainChannels;
 import com.example.moree.mytvapp1.Turky.TurkyChannels;
 import com.example.moree.mytvapp1.UnitedKindom.UKChannels;
+import com.example.moree.mytvapp1.Video;
 import com.squareup.picasso.Picasso;
 import com.example.moree.mytvapp1.utlShared;
 
@@ -54,10 +59,10 @@ public class MyCountries extends Fragment {
     List<String> CountryNames = new ArrayList<>();
     ArrayList<String> Flink = new ArrayList<>();
     Panel panel;
-    SharedPreferences sharedPreferences;
     Fragmentcontainer fragmentcontainer;
     MyCountryAdapter country;
-    boolean saved = false;
+    MainActivity activity;
+    String n;
 
     public MyCountries() {
 
@@ -72,7 +77,7 @@ public class MyCountries extends Fragment {
         Toast.makeText(context, "getting data", Toast.LENGTH_SHORT).show();
         getData();
         utlShared = new utlShared(context);
-        sharedPreferences = context.getSharedPreferences("Favorites", MODE_PRIVATE);
+
 
 
         Toast.makeText(context, "got data from GetData()", Toast.LENGTH_SHORT).show();
@@ -232,11 +237,12 @@ public class MyCountries extends Fragment {
     }
 
 
-    public void MyAlertDialog1(final Context context, final String SaveLink, final String SavePic, final String ChannelPic, final String getString) {
+    public void MyAlertDialog1(final Context context, final String SaveLink, final String SavePic) {
         this.context = context;
         Toast.makeText(context, "My Alert", Toast.LENGTH_SHORT).show();
         //my alert
-        AlertDialog.Builder mysingleAlert = new AlertDialog.Builder(context);
+        Find(context);
+        final AlertDialog.Builder mysingleAlert = new AlertDialog.Builder(context);
         // my inflate for my alert
         final View FavoriteIn = LayoutInflater.from(context).inflate(R.layout.alert_favorite, null, false);
         //my bookmark sign
@@ -244,13 +250,26 @@ public class MyCountries extends Fragment {
         //my image
         final ImageView Image = (ImageView) FavoriteIn.findViewById(R.id.myimg);
         Picasso.with(context)
-                .load(ChannelPic)
+                .load(SavePic)
                 .into(Image);
+        mysingleAlert.setPositiveButton("Play Video", new DialogInterface.OnClickListener() {
+            @Override
+            public void onClick(DialogInterface dialog, int which) {
+                Intent intent = new Intent(context, Video.class);
+                intent.putExtra("link", (SaveLink));
+                context.startActivity(intent);
+            }
+        });
+        mysingleAlert.setNegativeButton("Cancel", new DialogInterface.OnClickListener() {
+            @Override
+            public void onClick(DialogInterface dialog, int which) {
+                dialog.dismiss();
+            }
+        });
         if (Flink.isEmpty()) {
             bookmarks.setTextColor(Color.WHITE);
         }
         if (Flink.contains(SaveLink)) {
-            Toast.makeText(context, "Channel Exists", Toast.LENGTH_SHORT).show();
             bookmarks.setTextColor(Color.YELLOW);
             mysingleAlert.setView(FavoriteIn);
             mysingleAlert.show();
@@ -268,6 +287,7 @@ public class MyCountries extends Fragment {
                         public void handleResponse(BackendlessCollection<FavoriteData> response) {
                             for (FavoriteData item : response.getData()) {
                                 Flink.add(item.FavoriteLink);
+
                             }
 
                         }
@@ -297,30 +317,34 @@ public class MyCountries extends Fragment {
                         pd.dismiss();
                         return;
                     } else {
-                        FavoriteData fData = new FavoriteData();
-                        fData.FavoriteLink = SaveLink;
-                        fData.FavoritePic = SavePic;
-                        Backendless.Persistence.of(FavoriteData.class).save(fData, new AsyncCallback<FavoriteData>() {
+                        Backendless.UserService.CurrentUser();
+                        AsyncCallback<FavoriteData> favoriteDataAsyncCallback = new AsyncCallback<FavoriteData>() {
                             @Override
                             public void handleResponse(FavoriteData response) {
-                                Toast.makeText(context, "Channel Saved", Toast.LENGTH_SHORT).show();
-                                bookmarks.setTextColor(Color.YELLOW);
-                                Find(context);
-                                pd.dismiss();
+
                             }
 
                             @Override
                             public void handleFault(BackendlessFault fault) {
 
                             }
-                        });
+                        };
+                        FavoriteData fData = new FavoriteData();
+                        fData.FavoriteLink = SaveLink;
+                        fData.FavoritePic = SavePic;
+                        String a = utlShared.getId("");
+                      //  fData.ownerId = utlShared.getId("");
+                        Toast.makeText(context, ""+n, Toast.LENGTH_SHORT).show();
+                        Backendless.Data.of(FavoriteData.class).save(fData, favoriteDataAsyncCallback);
+                        bookmarks.setTextColor(Color.YELLOW);
+                        pd.dismiss();
+                        Find(context);
                         return;
                     }
 
                 }
             });
         }
-
         mysingleAlert.setView(FavoriteIn);
         mysingleAlert.show();
     }
@@ -365,7 +389,7 @@ public class MyCountries extends Fragment {
                         mysingleAlert.dismiss();
                         return;
                     } else {
-                        utlShared.AddUser(SaveLink,SavePic);
+                        utlShared.AddChannel(SaveLink, SavePic);
                         bookmarks.setTextColor(Color.YELLOW);
                         Toast.makeText(context, "Channel Saved", Toast.LENGTH_SHORT).show();
                         pd1.dismiss();
@@ -403,7 +427,7 @@ public class MyCountries extends Fragment {
                     Toast.makeText(context, "Exists", Toast.LENGTH_SHORT).show();
                     return;
                 }
-                utlShared.AddUser(Pic, Link);
+                utlShared.AddChannel(Pic, Link);
                 Toast.makeText(context, "Pic" + Link + "\t" + "Link\n" + Pic, Toast.LENGTH_SHORT).show();
                 bookmarks.setTextColor(Color.YELLOW);
                 Toast.makeText(context, "Data was Saved", Toast.LENGTH_SHORT).show();

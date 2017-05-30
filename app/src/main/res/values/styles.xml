@@ -40,7 +40,7 @@
     </style>
     <style name="mainFont">
         <item name="android:fontFamily">serif</item>
-        <item name="android:textColor">#551b9b</item>
+        <item name="android:textColor">@color/Blue</item>
         <item name="android:textColorHint">#551b9b</item>
     </style>
 

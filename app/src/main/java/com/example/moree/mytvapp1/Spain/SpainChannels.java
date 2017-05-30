@@ -29,7 +29,8 @@ import java.util.ArrayList;
 public class SpainChannels extends Fragment {
     Context context;
     ArrayList<String> Spainlink = new ArrayList<>();
-    ArrayList<String> SpainPics1 = new ArrayList<>();
+    ArrayList<String> SpainPics = new ArrayList<>();
+    ArrayList<String> SpainNames = new ArrayList<>();
     GridView SPchannels;
     MyCountries myCountries;
 
@@ -42,8 +43,7 @@ public class SpainChannels extends Fragment {
     public View onCreateView(LayoutInflater inflater, final ViewGroup container, Bundle savedInstanceState) {
         //Save_SpainLinks();
         context = container.getContext();
-        Spainlink.clear();
-        SpainPics1.clear();
+        SpainPics.clear();
         Get_SpainData();
         myCountries = new MyCountries();
         myCountries.Find(context);
@@ -52,6 +52,8 @@ public class SpainChannels extends Fragment {
         SPchannels.setOnItemClickListener(new AdapterView.OnItemClickListener() {
             @Override
             public void onItemClick(AdapterView<?> adapterView, View view, int i, long l) {
+                myCountries.MyAlertDialog1(context,Spainlink.get(i),SpainPics.get(i));
+
 //sport
                 /*
                 link.add("http://1.442244.info/sp_la_1/index.m3u8");
@@ -61,17 +63,11 @@ public class SpainChannels extends Fragment {
                 link.add("http://1.442244.info/sp_m_fotbol/index.m3u8");
                 link.add("http://1.442244.info/sp_m_dep_1/index.m3u8");
 */
-//News
-                //Music
-                Intent intent = new Intent(context, Video.class);
-                intent.putExtra("link", (Spainlink.get(i)));
-                context.startActivity(intent);
             }
         });
         SPchannels.setOnItemLongClickListener(new AdapterView.OnItemLongClickListener() {
             @Override
             public boolean onItemLongClick(AdapterView<?> parent, View view, int position, long id) {
-                myCountries.MyAlertDialog1(context, Spainlink.get(position), SpainPics1.get(position), SpainPics1.get(position), Spainlink.get(position));
                 return false;
             }
         });
@@ -100,9 +96,10 @@ public class SpainChannels extends Fragment {
             public void handleResponse(BackendlessCollection<SpainData> response) {
                 for (SpainData item : response.getData()) {
                     Spainlink.add(item.SpainChannel_Link);
-                    SpainPics1.add(item.SpainChannel_Pic);
+                    SpainPics.add(item.SpainChannel_Pic);
+                    SpainNames.add(item.SpainChannel_Name);
                 }
-                SPchannels.setAdapter(new MyCountryAdapter(context, SpainPics1, Spainlink));
+                SPchannels.setAdapter(new MyCountryAdapter(context, SpainPics, SpainNames));
             }
 
             @Override

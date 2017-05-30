@@ -52,6 +52,7 @@ public class BulgariaChannels extends Fragment {
         myBGgrid.setOnItemClickListener(new AdapterView.OnItemClickListener() {
             @Override
             public void onItemClick(AdapterView<?> adapterView, View view, int i, long l) {
+                myCountries.MyAlertDialog1(context,BgLink.get(i),BgPics1.get(i));
                 //sport
 /*
                 link.add("http://1.442244.info/bg_diema_sport/index.m3u8");
@@ -59,35 +60,11 @@ public class BulgariaChannels extends Fragment {
                 link.add("http://1.442244.info/bg_nova_sport/index.m3u8");
                 link.add("http://1.442244.info/bg_sport_plus_hd/index.m3u8");
                 */
-                //news
-
-
-                //music
-
-
-                Intent intent = new Intent(context, Video.class);
-                intent.putExtra("link", (BgLink.get(i)));
-                context.startActivity(intent);
-               /*
-                switch (i)
-                {
-                    case 0:
-                        Toast.makeText(context, " Sky Sports 2 ", Toast.LENGTH_SHORT).show();
-                break;
-                    case 1:
-                        Toast.makeText(context, "Sky Sports 3", Toast.LENGTH_SHORT).show();
-                break;
-                    case 2:
-                        Toast.makeText(context, "3", Toast.LENGTH_SHORT).show();
-                break;
-                }
-                */
             }
         });
         myBGgrid.setOnItemLongClickListener(new AdapterView.OnItemLongClickListener() {
             @Override
             public boolean onItemLongClick(AdapterView<?> parent, View view, int position, long id) {
-                myCountries.MyAlertDialog1(context, BgLink.get(position), BgPics1.get(position), BgPics1.get(position), BgLink.get(position));
                 return false;
             }
         });

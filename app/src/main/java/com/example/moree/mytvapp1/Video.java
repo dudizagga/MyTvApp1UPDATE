@@ -10,6 +10,7 @@ import android.net.Uri;
 import android.os.Bundle;
 import android.provider.MediaStore;
 import android.support.v7.app.AppCompatActivity;
+
 import com.devbrackets.android.exomedia.listener.OnPreparedListener;
 import com.devbrackets.android.exomedia.ui.widget.EMVideoView;
 import com.devbrackets.android.exomedia.ui.widget.VideoControls;
@@ -17,44 +18,47 @@ import com.devbrackets.android.exomedia.ui.widget.VideoControlsLeanback;
 
 
 public class Video extends AppCompatActivity {
-    EMVideoView video;
+    private EMVideoView video;
     Context context;
     int vlcRequestCode = 42;
+
     // SimpleExoPlayer player;
     // ExoPlayerFactory exo;
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-       setContentView(R.layout.activity_video);
-     this.context = this;
-       video = (EMVideoView) findViewById(R.id.video_view);
-  //uri();
-uri1();
-       // uri2();
+        setContentView(R.layout.activity_video);
+        this.context = this;
+        video = (EMVideoView) findViewById(R.id.video_view);
+        //uri();
+       // uri1();
+         uri2();
     }
 
-public void uri1()
-{Bundle b = getIntent().getExtras();
-    Intent intent=new Intent(Intent.ACTION_VIEW);
-    intent.setDataAndType(Uri.parse(b.getString("link")),"video/*");
-    startActivity(Intent.createChooser(intent,"org.videolan.vlc"));
-    onBackPressed();
-}
+    private void uri1() {
+        Bundle b = getIntent().getExtras();
+        Intent intent = new Intent(Intent.ACTION_VIEW);
+        intent.setDataAndType(Uri.parse(b.getString("link")), "video/*");
+        startActivity(Intent.createChooser(intent, "org.videolan.vlc"));
+        onBackPressed();
+    }
+
     public void uri() {
 
         Bundle b = getIntent().getExtras();
         Intent i = new Intent(Intent.ACTION_VIEW);
-        Uri uri=Uri.parse(b.getString("link"));
-       i.setPackage("org.videolan.vlc");
+        Uri uri = Uri.parse(b.getString("link"));
+        i.setPackage("org.videolan.vlc");
         i.setData(uri);
         i.putExtra("from_start", false);
         //i.putExtra("position", 90000l);
         //i.setComponent(new ComponentName("org.videolan.vlc","org.videolan.vlc.gui.video.VideoPlayerActivity"));
-        i.setDataAndType(uri,"video/*");
-        startActivityForResult(i,vlcRequestCode);
+        i.setDataAndType(uri, "video/*");
+        startActivityForResult(i, vlcRequestCode);
 
-      onBackPressed();
-        }
+        onBackPressed();
+    }
+
     @Override
     public void onBackPressed() {
 
@@ -62,7 +66,7 @@ public void uri1()
     }
 
 
-    public void uri2() {
+    private void uri2() {
         try {
             Bundle b = getIntent().getExtras();
             video.getVideoControls().setVerticalFadingEdgeEnabled(true);
@@ -86,7 +90,6 @@ public void uri1()
             e.printStackTrace();
         }
     }
-
 
 
 }

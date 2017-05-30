@@ -35,14 +35,15 @@ import java.util.List;
 
 public class Panel extends Fragment {
     Context context;
-    LinearLayout container1;
+    private LinearLayout container1;
     WifiManager wifiManager;
-    public ConnectivityManager cm;
-    public NetworkInfo activeNetwork;
-    public ProgressDialog resetNetwork;
-    Fragmentcontainer fragmentcontainer;
-    utlShared ut;
-MainActivity activity;
+    private ConnectivityManager cm;
+    private NetworkInfo activeNetwork;
+    private ProgressDialog resetNetwork;
+    private Fragmentcontainer fragmentcontainer;
+    private utlShared ut;
+    private MainActivity activity;
+
     public Panel() {
     }
 
@@ -91,8 +92,8 @@ MainActivity activity;
             public void onClick(View v) {
                 ut = new utlShared(context);
                 activity = new MainActivity();
-                activity.logged = ut.putBol(false);
-                startActivity(new Intent(context,MainActivity.class));
+                activity.setLogged(ut.putBol(false));
+                startActivity(new Intent(context, MainActivity.class));
                 Toast.makeText(context, "Logout", Toast.LENGTH_SHORT).show();
             }
         });
@@ -155,8 +156,6 @@ MainActivity activity;
         });
         reload.show();
     }
-
-
 
 
 }

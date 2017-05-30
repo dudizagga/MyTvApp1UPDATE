@@ -30,6 +30,7 @@ public class DenmarkChannels extends Fragment {
     Context context;
     ArrayList<String> Denlink = new ArrayList<>();
     ArrayList<String> DenPics1 = new ArrayList<>();
+    ArrayList<String> DenNames = new ArrayList<>();
     MyCountries myCountries;
     GridView myDENList;
 
@@ -51,23 +52,12 @@ public class DenmarkChannels extends Fragment {
         myDENList.setOnItemClickListener(new AdapterView.OnItemClickListener() {
             @Override
             public void onItemClick(AdapterView<?> adapterView, View view, int i, long l) {
-                //sport
-                /*
-                link.add("http://1.442244.info/de_sky_sport_1/index.m3u8");
-                link.add("http://1.442244.info/de_sky_sport_2/index.m3u8");
-                link.add("http://1.442244.info/de_sky_bundesliga_1/index.m3u8");
-                //news
-*/
-                //music
-                Intent intent = new Intent(context, Video.class);
-                intent.putExtra("link", ((Denlink.get(i))));
-                context.startActivity(intent);
+                myCountries.MyAlertDialog1(context,Denlink.get(i),DenPics1.get(i));
             }
         });
         myDENList.setOnItemLongClickListener(new AdapterView.OnItemLongClickListener() {
             @Override
             public boolean onItemLongClick(AdapterView<?> parent, View view, int position, long id) {
-                myCountries.MyAlertDialog1(context, Denlink.get(position), DenPics1.get(position), DenPics1.get(position), Denlink.get(position));
                 return false;
             }
         });
@@ -97,6 +87,7 @@ public class DenmarkChannels extends Fragment {
                 for (DenmarkData item : response.getData()) {
                     Denlink.add(item.ChannelDenLink);
                     DenPics1.add(item.ChannelDenPic);
+                    DenNames.add(item.ChannelDenName);
                 }
                 myDENList.setAdapter(new MyCountryAdapter(context, DenPics1,Denlink));
             }

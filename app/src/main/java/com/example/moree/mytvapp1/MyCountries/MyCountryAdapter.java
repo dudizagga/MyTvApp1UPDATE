@@ -64,7 +64,7 @@ public class MyCountryAdapter extends BaseAdapter {
     public View getView(int i, View convertView, ViewGroup viewGroup) {
         View gridInflateItem = LayoutInflater.from(context).inflate(R.layout.my_grid_item, null, false);
         ImageView myImg = (ImageView) gridInflateItem.findViewById(R.id.myItem_Img);
-        gridInflateItem.setLayoutParams(new GridView.LayoutParams(350,450));
+        gridInflateItem.setLayoutParams(new GridView.LayoutParams(100,150));
         LinearLayout myGrid=(LinearLayout)gridInflateItem.findViewById(R.id.MyGridItem);
        // gridInflateItem.setPadding(0,0,0,0);
         TextView myText=(TextView)gridInflateItem.findViewById(R.id.myItem_text);

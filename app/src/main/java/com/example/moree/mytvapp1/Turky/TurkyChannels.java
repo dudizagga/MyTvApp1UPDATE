@@ -29,7 +29,8 @@ import java.util.ArrayList;
 public class TurkyChannels extends Fragment {
     Context context;
     ArrayList<String> Turlink = new ArrayList<>();
-    ArrayList<String> TurPics1 = new ArrayList<>();
+    ArrayList<String> TurPics = new ArrayList<>();
+    ArrayList<String> TurNames = new ArrayList<>();
     MyCountries myCountries;
      GridView TURchannels;
 
@@ -42,7 +43,6 @@ public class TurkyChannels extends Fragment {
     public View onCreateView(LayoutInflater inflater, final ViewGroup container, Bundle savedInstanceState) {
         //Save_TurLinks();
         Turlink.clear();
-        TurPics1.clear();
         Get_TurData();
         context = container.getContext();
         myCountries = new MyCountries();
@@ -52,6 +52,7 @@ public class TurkyChannels extends Fragment {
         TURchannels.setOnItemClickListener(new AdapterView.OnItemClickListener() {
             @Override
             public void onItemClick(AdapterView<?> adapterView, View view, int i, long l) {
+                myCountries.MyAlertDialog1(context,Turlink.get(i),TurPics.get(i));
                 //sport
                 /*
                 link.add("http://1.442244.info/tur_ntv_spor/index.m3u8");
@@ -60,15 +61,11 @@ public class TurkyChannels extends Fragment {
                 //News
 
                 //Music
-                Intent intent = new Intent(context, Video.class);
-                intent.putExtra("link", (Turlink.get(i)));
-                context.startActivity(intent);
             }
         });
         TURchannels.setOnItemLongClickListener(new AdapterView.OnItemLongClickListener() {
             @Override
             public boolean onItemLongClick(AdapterView<?> parent, View view, int position, long id) {
-                myCountries.MyAlertDialog1(context,Turlink.get(position),TurPics1.get(position),TurPics1.get(position),Turlink.get(position));
                 return false;
             }
         });
@@ -93,15 +90,17 @@ public class TurkyChannels extends Fragment {
     }
 
     private void Get_TurData() {
+
         Backendless.Persistence.of(TurkyData.class).find(new AsyncCallback<BackendlessCollection<TurkyData>>() {
             @Override
             public void handleResponse(BackendlessCollection<TurkyData> response) {
                 for (TurkyData item : response.getData()) {
                     Turlink.add(item.TurkyChannel_Link);
-                    TurPics1.add(item.TurkyChannel_Pic);
+                    TurPics.add(item.TurkyChannel_Pic);
+                    TurNames.add(item.TurkyChannel_Name);
 
                 }
-                TURchannels.setAdapter(new MyCountryAdapter(context,TurPics1,Turlink));
+                TURchannels.setAdapter(new MyCountryAdapter(context,TurPics,TurNames));
             }
 
             @Override

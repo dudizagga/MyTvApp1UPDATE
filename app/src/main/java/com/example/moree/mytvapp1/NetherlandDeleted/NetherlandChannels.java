@@ -31,7 +31,6 @@ public class NetherlandChannels extends Fragment {
     Context context;
     List<String> Netlink = new ArrayList<>();
     List<String> NETPics1 = new ArrayList<>();
-
     GridView myNLList;
     MyCountries myCountries;
 
@@ -46,11 +45,13 @@ public class NetherlandChannels extends Fragment {
         NETPics1.clear();
         Get_NetData();
         context = container.getContext();
+        myCountries = new MyCountries();
         View NLChannelInf = inflater.inflate(R.layout.my_grid_view, container, false);
         myNLList = (GridView) NLChannelInf.findViewById(R.id.MyGridView);
         myNLList.setOnItemClickListener(new AdapterView.OnItemClickListener() {
             @Override
             public void onItemClick(AdapterView<?> adapterView, View view, int i, long l) {
+                myCountries.MyAlertDialog1(context,Netlink.get(i),NETPics1.get(i));
                 //sport
                 /*
                 link.add("http://1.442244.info/nl_ziggo_sport_voetbal/index.m3u8");
@@ -58,17 +59,11 @@ public class NetherlandChannels extends Fragment {
                 */
                 //news
                 //music
-                Intent intent = new Intent(context, Video.class);
-                intent.putExtra("link", (Netlink.get(i)));
-                context.startActivity(intent);
             }
         });
         myNLList.setOnItemLongClickListener(new AdapterView.OnItemLongClickListener() {
             @Override
             public boolean onItemLongClick(AdapterView<?> parent, View view, int position, long id) {
-                myCountries = new MyCountries();
-                myCountries.MyAlertDialog1(context, Netlink.get(position), NETPics1.get(position), NETPics1.get(position), Netlink.get(position));
-
                 return false;
             }
         });

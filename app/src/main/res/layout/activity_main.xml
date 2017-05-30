@@ -11,7 +11,7 @@
         android:layout_height="wrap_content"
         android:text="Login"
         android:textSize="60dp"
-        android:textColor="@color/black"
+        android:textColor="@color/Blue"
         android:gravity="center"
         android:layout_marginTop="20dp"/>
 </LinearLayout>

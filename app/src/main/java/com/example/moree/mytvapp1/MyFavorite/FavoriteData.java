@@ -8,5 +8,5 @@ public class FavoriteData {
     public String FavoriteLink;
     public String FavoritePic;
     public String objectId;
-    public Boolean isadded;
+    public String ownerId;
 }

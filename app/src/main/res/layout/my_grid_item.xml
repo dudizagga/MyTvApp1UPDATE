@@ -9,7 +9,8 @@
         android:gravity="center"
         android:orientation="vertical"
         android:background="@drawable/grid_color_selector"
-        android:id="@+id/MyGridItem">
+        android:id="@+id/MyGridItem"
+        >
 
         <ImageView
             android:id="@+id/myItem_Img"

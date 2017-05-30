@@ -2,7 +2,6 @@ package com.example.moree.mytvapp1.UnitedKindom;
 
 import android.app.Fragment;
 import android.content.Context;
-import android.content.Intent;
 import android.os.Bundle;
 import android.support.annotation.Nullable;
 import android.view.LayoutInflater;
@@ -10,26 +9,27 @@ import android.view.View;
 import android.view.ViewGroup;
 import android.widget.AdapterView;
 import android.widget.GridView;
+import android.widget.Toast;
 
 import com.backendless.Backendless;
 import com.backendless.BackendlessCollection;
 import com.backendless.async.callback.AsyncCallback;
+import com.backendless.exceptions.BackendlessException;
 import com.backendless.exceptions.BackendlessFault;
 import com.backendless.persistence.BackendlessDataQuery;
 import com.backendless.persistence.QueryOptions;
 import com.example.moree.mytvapp1.MyCountries.MyCountries;
 import com.example.moree.mytvapp1.MyCountries.MyCountryAdapter;
 import com.example.moree.mytvapp1.R;
-import com.example.moree.mytvapp1.Video;
 
 import java.util.ArrayList;
 
 public class UKChannels extends Fragment {
     Context context;
     GridView UKchannels;
-     ArrayList<String> Uklink = new ArrayList<>();
-     ArrayList<String> UKpic1 = new ArrayList<>();
-     ArrayList<String> UKNames = new ArrayList<>();
+    ArrayList<String> Uklink = new ArrayList<>();
+    ArrayList<String> UKpic1 = new ArrayList<>();
+    ArrayList<String> UKNames = new ArrayList<>();
     MyCountries myCountries;
 
     public UKChannels() {
@@ -54,6 +54,7 @@ public class UKChannels extends Fragment {
             @Override
             public void onItemClick(AdapterView<?> adapterView, View view, int i, long l) {
 //sport
+                myCountries.MyAlertDialog1(context, Uklink.get(i), UKpic1.get(i));
                 /*
                 link.add(" http://mcdn-play-358.5centscdn.net:80/truemovies1extv/stream1.stream/playlist.m3u8");
                 link.add(" http://mcdn-play-358.5centscdn.net:80/sky1extv/stream1.stream/playlist.m3u8");
@@ -65,18 +66,18 @@ public class UKChannels extends Fragment {
 */
 //News
                 //Music
+                /*
                 Intent intent = new Intent(context, Video.class);
                 intent.putExtra("link", (Uklink.get(i)));
                 context.startActivity(intent);
-
+*/
             }
 
         });
         UKchannels.setOnItemLongClickListener(new AdapterView.OnItemLongClickListener() {
             @Override
             public boolean onItemLongClick(final AdapterView<?> parent, View view, final int position, long id) {
-                //myCountries.MyAlertDialog1(context, Uklink.get(position), UKpic1.get(position), UKpic1.get(position), Uklink.get(position));
-myCountries.MyAlertDialog2(context,Uklink.get(position),UKpic1.get(position));
+
                 return false;
             }
         });
@@ -99,15 +100,19 @@ myCountries.MyAlertDialog2(context,Uklink.get(position),UKpic1.get(position));
             }
         });
     }
+public static class ClassOne{
+
+}
 
     public void Get_UKData() {
-
         BackendlessDataQuery dataQuery = new BackendlessDataQuery();
         QueryOptions queryOptions = new QueryOptions();
         queryOptions.setPageSize(100);
         queryOptions.setOffset(0);
         dataQuery.setQueryOptions(queryOptions);
-        Backendless.Persistence.of(UKData.class).find(dataQuery,new AsyncCallback<BackendlessCollection<UKData>>() {
+
+
+        Backendless.Persistence.of(UKData.class).find(dataQuery, new AsyncCallback<BackendlessCollection<UKData>>() {
             @Override
             public void handleResponse(BackendlessCollection<UKData> response) {
                 for (UKData item : response.getData()) {
@@ -124,6 +129,8 @@ myCountries.MyAlertDialog2(context,Uklink.get(position),UKpic1.get(position));
 
             }
         });
+
+
     }
 
 }

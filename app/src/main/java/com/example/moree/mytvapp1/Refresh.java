@@ -17,28 +17,29 @@ import android.widget.Button;
 
 public class Refresh extends Fragment {
     Context context;
-MainActivity mainActivity;
+    MainActivity mainActivity;
     FragmentManager fm;
     FragmentTransaction ft;
+
     public Refresh() {
     }
 
     @Nullable
     @Override
-    public View onCreateView(LayoutInflater inflater, @Nullable final ViewGroup container, Bundle savedInstanceState)   {
+    public View onCreateView(LayoutInflater inflater, @Nullable final ViewGroup container, Bundle savedInstanceState) {
         context = container.getContext();
-        mainActivity=(MainActivity)getActivity();
-        final View reFresh= inflater.inflate(R.layout.refresh,container,false);
+        mainActivity = (MainActivity) getActivity();
+        final View reFresh = inflater.inflate(R.layout.refresh, container, false);
         Button RefreshButton = (Button) reFresh.findViewById(R.id.btnrefresh);
-    RefreshButton.setOnClickListener(new View.OnClickListener() {
-        @Override
-        public void onClick(View v) {
-            fm = getFragmentManager();
-            ft = fm.beginTransaction();
-            fm.popBackStack();
-            ft.commit();
-        }
-    });
-    return reFresh;
+        RefreshButton.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                fm = getFragmentManager();
+                ft = fm.beginTransaction();
+                fm.popBackStack();
+                ft.commit();
+            }
+        });
+        return reFresh;
     }
-    }
+}

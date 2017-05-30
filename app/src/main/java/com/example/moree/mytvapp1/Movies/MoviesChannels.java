@@ -29,7 +29,6 @@ import java.util.ArrayList;
 
 public class MoviesChannels extends Fragment {
     Context context;
-    ArrayList<String> link;
     ArrayList<String> getTvShowsPics = new ArrayList<>();
     ArrayList<String> getTvShowsLinks = new ArrayList<>();
     ArrayList<String> getTvShowsNames = new ArrayList<>();
@@ -42,36 +41,31 @@ public class MoviesChannels extends Fragment {
         context = container.getContext();
 
         //saveTvShow();
-        myCountries =new MyCountries();
         getTvShow();
+        myCountries=new MyCountries();
         Toast.makeText(context, "TvShow", Toast.LENGTH_SHORT).show();
         View movInf = inflater.inflate(R.layout.activity_categories, container, false);
         listTvShows = (GridView) movInf.findViewById(R.id.TvShow);
         listTvShows.setOnItemClickListener(new AdapterView.OnItemClickListener() {
             @Override
             public void onItemClick(AdapterView<?> adapterView, View view, int i, long l) {
-
-//check point
-                Intent intent = new Intent(context, Video.class);
-                intent.putExtra("link", (getTvShowsLinks.get(i)));
-                context.startActivity(intent);
-
+                myCountries.MyAlertDialog1(context,getTvShowsLinks.get(i),getTvShowsPics.get(i));
 /*
                 Intent intent = new Intent(context,Video.class);
-                intent.setData(Uri.parse(String.valueOf(getTvShowsLinks.get(i))));
+                intent.setData(Uri.parse(String.valueOf(getTvShowsNames.get(i))));
                 context.startActivity(intent);
 */
             }
 
         });
-
 listTvShows.setOnItemLongClickListener(new AdapterView.OnItemLongClickListener() {
     @Override
     public boolean onItemLongClick(AdapterView<?> parent, View view, int position, long id) {
-        myCountries.MyAlertDialog2(context,getTvShowsLinks.get(position),getTvShowsPics.get(position));
+
         return false;
     }
 });
+
         return movInf;
 
     }
@@ -94,7 +88,6 @@ listTvShows.setOnItemLongClickListener(new AdapterView.OnItemLongClickListener()
 
             }
         });
-        
     }
 
     private void getTvShow() {
@@ -103,8 +96,9 @@ listTvShows.setOnItemLongClickListener(new AdapterView.OnItemLongClickListener()
             @Override
             public void handleResponse(BackendlessCollection<MoviesData> response) {
                 for (MoviesData item : response.getData()) {
-                    getTvShowsNames.add(item.Movies_names);
+                    getTvShowsLinks.add(item.MoviesChannel_Link);
                     getTvShowsPics.add(item.MoviesChannel_Pic);
+                    getTvShowsNames.add(item.Movies_names);
                 }
                 listTvShows.setAdapter(new MyCountryAdapter(context, getTvShowsPics, getTvShowsNames));
                 return;

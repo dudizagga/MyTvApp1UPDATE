@@ -29,7 +29,8 @@ import java.util.ArrayList;
 public class IsraelChannels extends Fragment {
     Context context;
     ArrayList<String> ILlink = new ArrayList<>();
-    ArrayList<String> ILPics1 = new ArrayList<>();
+    ArrayList<String> ILPics = new ArrayList<>();
+    ArrayList<String> ILNames = new ArrayList<>();
     MyCountries myCountries;
     GridView ILchannels;
 
@@ -45,7 +46,7 @@ public class IsraelChannels extends Fragment {
         context = container.getContext();
         //  Save_ILLinks();
         ILlink.clear();
-        ILPics1.clear();
+        ILPics.clear();
         Get_ILData();
         myCountries = new MyCountries();
         myCountries.Find(context);
@@ -54,26 +55,14 @@ public class IsraelChannels extends Fragment {
         ILchannels.setOnItemClickListener(new AdapterView.OnItemClickListener() {
             @Override
             public void onItemClick(AdapterView<?> adapterView, View view, int i, long l) {
-                /*
-                link.add("");
-//ערוץ 2
-                link.add("http://keshethlslive-lh.akamaihd.net/i/c2n_1@195269/master.m3u8");
-                Toast.makeText(context, "ערוץ 2", Toast.LENGTH_SHORT).show();
-//sport
-
-//News
-
-                //Music
-*/
-                Intent intent = new Intent(context, Video.class);
-                intent.putExtra("link", ((ILlink.get(i))));
-                context.startActivity(intent);
+            myCountries.MyAlertDialog1(context,ILNames.get(i),ILPics.get(i));
             }
         });
+
+
         ILchannels.setOnItemLongClickListener(new AdapterView.OnItemLongClickListener() {
             @Override
             public boolean onItemLongClick(AdapterView<?> parent, View view, int position, long id) {
-                myCountries.MyAlertDialog1(context, ILlink.get(position), ILPics1.get(position), ILPics1.get(position), ILlink.get(position));
                 return false;
             }
         });
@@ -102,9 +91,10 @@ public class IsraelChannels extends Fragment {
             public void handleResponse(BackendlessCollection<IsraelData> response) {
                 for (IsraelData item : response.getData()) {
                     ILlink.add(item.ILChannel_Link);
-                    ILPics1.add(item.ILChannel_Pic);
+                    ILPics.add(item.ILChannel_Pic);
+                    ILNames.add(item.ILChannel_Name);
                 }
-                ILchannels.setAdapter(new MyCountryAdapter(context, ILPics1, ILlink));
+                ILchannels.setAdapter(new MyCountryAdapter(context, ILPics, ILNames));
             }
 
             @Override

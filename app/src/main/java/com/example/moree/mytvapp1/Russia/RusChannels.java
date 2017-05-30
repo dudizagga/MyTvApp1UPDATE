@@ -29,7 +29,8 @@ import java.util.ArrayList;
 public class RusChannels extends Fragment {
     Context context;
     ArrayList<String> Ruslink = new ArrayList<>();
-    ArrayList<String> RusPics1 = new ArrayList<>();
+    ArrayList<String> RusPics = new ArrayList<>();
+    ArrayList<String> RusNames = new ArrayList<>();
      GridView RUschannels;
     MyCountries myCountries;
 
@@ -40,8 +41,7 @@ public class RusChannels extends Fragment {
     @Override
     public View onCreateView(LayoutInflater inflater, final ViewGroup container, Bundle savedInstanceState) {
         // Save_RusLinks();
-        Ruslink.clear();
-        RusPics1.clear();
+        RusPics.clear();
         Get_RusData();
         context = container.getContext();
         myCountries=new MyCountries();
@@ -51,22 +51,14 @@ public class RusChannels extends Fragment {
         RUschannels.setOnItemClickListener(new AdapterView.OnItemClickListener() {
             @Override
             public void onItemClick(AdapterView<?> adapterView, View view, int i, long l) {
-                //Sport
-                /*
+            myCountries.MyAlertDialog1(context,Ruslink.get(i),RusPics.get(i));
 
-               link.add("http://146.185.243.250:8000/play/rossija1");
-                */
-                //News
-                //Music
-                Intent intent = new Intent(context, Video.class);
-                intent.putExtra("link", (Ruslink.get(i)));
-                context.startActivity(intent);
             }
         });
         RUschannels.setOnItemLongClickListener(new AdapterView.OnItemLongClickListener() {
             @Override
             public boolean onItemLongClick(AdapterView<?> parent, View view, int position, long id) {
-                myCountries.MyAlertDialog1(context, Ruslink.get(position), RusPics1.get(position),RusPics1.get(position),Ruslink.get(position));
+                myCountries.MyAlertDialog2(context,RusNames.get(position),RusPics.get(position));
                 return false;
             }
         });
@@ -96,9 +88,10 @@ public class RusChannels extends Fragment {
             public void handleResponse(BackendlessCollection<RusData> response) {
                 for (RusData item : response.getData()) {
                     Ruslink.add(item.RusChannel_Link);
-                    RusPics1.add(item.RusChannel_Pic);
+                    RusPics.add(item.RusChannel_Pic);
+                    RusNames.add(item.RusChannel_Name);
                 }
-                RUschannels.setAdapter(new MyCountryAdapter(context,RusPics1,Ruslink));
+                RUschannels.setAdapter(new MyCountryAdapter(context,RusPics,RusNames));
             }
 
             @Override

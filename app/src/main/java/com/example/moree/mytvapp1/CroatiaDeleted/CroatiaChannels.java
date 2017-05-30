@@ -45,45 +45,20 @@ public class CroatiaChannels extends Fragment {
         Crolinks.clear();
         CroPics1.clear();
         // Get_CroData();
+        myCountries = new MyCountries();
         View CORChannelInf = inflater.inflate(R.layout.my_grid_view, container, false);
         myCORist = (GridView) CORChannelInf.findViewById(R.id.MyGridView);
         myCORist.setOnItemClickListener(new AdapterView.OnItemClickListener() {
             @Override
             public void onItemClick(AdapterView<?> adapterView, View view, int i, long l) {
-                //sport
-                /*
-                link.add("http://1.442244.info/cro_arena_sport_1/index.m3u8");
-                link.add("http://1.442244.info/cro_arena_sport_2/index.m3u8");
-                link.add("http://1.442244.info/cro_arena_sport_3/index.m3u8");
-                link.add("http://1.442244.info/cro_arena_sport_4/index.m3u8");
-                */
-                //news
-                //music
-                Intent intent = new Intent(context, Video.class);
-                intent.putExtra("link", (Crolinks.get(i)));
-                context.startActivity(intent);
-               /*
-                switch (i)
-                {
-                    case 0:
-                        Toast.makeText(context, " Sky Sports 2 ", Toast.LENGTH_SHORT).show();
-                break;
-                    case 1:
-                        Toast.makeText(context, "Sky Sports 3", Toast.LENGTH_SHORT).show();
-                break;
-                    case 2:
-                        Toast.makeText(context, "3", Toast.LENGTH_SHORT).show();
-                break;
-                }
-                */
+                myCountries.MyAlertDialog1(context,Crolinks.get(i),CroPics1.get(i));
+
             }
         });
         myCORist.setOnItemLongClickListener(new AdapterView.OnItemLongClickListener() {
             @Override
             public boolean onItemLongClick(AdapterView<?> parent, View view, int position, long id) {
-                myCountries = new MyCountries();
-                Favorite favorite = new Favorite();
-                myCountries.MyAlertDialog1(context, Crolinks.get(position), CroPics1.get(position), CroPics1.get(position), Crolinks.get(position));
+
                 return false;
             }
         });

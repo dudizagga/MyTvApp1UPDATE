@@ -33,13 +33,16 @@ import weborb.client.Fault;
 
 public class MainActivity extends AppCompatActivity {
     Context context;
-    EditText userId, usePass;
-    Button Login, register;
-    utlShared ut;
-    Fragmentcontainer fragmentcontainer;
-    TextInputLayout input_Email, input_pass;
-    public boolean logged;
+    private EditText userId, usePass;
+    private Button Login, register;
+    private utlShared ut;
+    private TextInputLayout input_Email, input_pass;
+    private boolean logged;
 
+
+    public void setLogged(boolean log) {
+        this.logged = log;
+    }
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -52,7 +55,6 @@ public class MainActivity extends AppCompatActivity {
 
     protected void setPointer() {
         this.context = this;
-        //StayLogged();
         userId = (EditText) findViewById(R.id.userName);
         usePass = (EditText) findViewById(R.id.usePass);
         Login = (Button) findViewById(R.id.btnLogin);
@@ -61,7 +63,6 @@ public class MainActivity extends AppCompatActivity {
         input_pass = (TextInputLayout) findViewById(R.id.Input_pass);
         ut = new utlShared(context);
         logged = ut.getBol(false);
-        fragmentcontainer = new Fragmentcontainer();
         Login.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
@@ -110,7 +111,7 @@ public class MainActivity extends AppCompatActivity {
 
     }
 
-    protected void Login() {
+    private void Login() {
         final String Myuser = userId.getText().toString();
         final String Mypass = usePass.getText().toString();
 
@@ -127,7 +128,7 @@ public class MainActivity extends AppCompatActivity {
                 public void handleResponse(BackendlessUser response) {
                     String a = Backendless.UserService.CurrentUser().getUserId();
                     ut.putId(a);
-                    Toast.makeText(context, "my user id : "+a, Toast.LENGTH_SHORT).show();
+                    Toast.makeText(context, "my user id : " + a, Toast.LENGTH_SHORT).show();
                     Intent First = new Intent(context, Fragmentcontainer.class);
                     startActivity(First);
 

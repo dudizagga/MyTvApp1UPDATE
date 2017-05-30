@@ -44,14 +44,14 @@
                 android:layout_height="wrap_content"
                 android:text="@string/categories"
                 android:layout_weight="1"
-                android:textColor="@color/black"
+                android:textColor="@color/Blue"
                 android:gravity="center"/>
             <TextView
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:text="@string/countries"
                 android:layout_weight="1"
-                android:textColor="@color/black"
+                android:textColor="@color/Blue"
                 android:gravity="center"/>
         </LinearLayout>
         <LinearLayout
@@ -88,7 +88,7 @@
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:text="Favorites"
-                android:textColor="@color/black"
+                android:textColor="@color/Blue"
                 android:layout_weight="1"
                 android:gravity="center"/>
             <TextView
@@ -96,7 +96,7 @@
                 android:layout_height="wrap_content"
                 android:text="Logout"
                 android:layout_weight="1"
-                android:textColor="@color/black"
+                android:textColor="@color/Blue"
                 android:gravity="center"/>
         </LinearLayout>
     </LinearLayout>

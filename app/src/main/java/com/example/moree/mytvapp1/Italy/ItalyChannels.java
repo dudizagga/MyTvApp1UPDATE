@@ -29,7 +29,8 @@ import java.util.ArrayList;
 public class ItalyChannels extends Fragment {
     Context context;
     ArrayList<String> ITlink=new ArrayList<>();
-    ArrayList<String> ITPics1=new ArrayList<>();
+    ArrayList<String> ITPics=new ArrayList<>();
+    ArrayList<String> ITNames=new ArrayList<>();
     MyCountries myCountries;
     GridView myITList;
     public ItalyChannels() {
@@ -40,7 +41,7 @@ public class ItalyChannels extends Fragment {
     public View onCreateView(LayoutInflater inflater, final ViewGroup container, Bundle savedInstanceState) {
        // Save_ITLinks();
         ITlink.clear();
-        ITPics1.clear();
+        ITPics.clear();
         Get_ITData();
         context = container.getContext();
         myCountries=new MyCountries();
@@ -50,27 +51,15 @@ public class ItalyChannels extends Fragment {
         myITList.setOnItemClickListener(new AdapterView.OnItemClickListener() {
             @Override
             public void onItemClick(AdapterView<?> adapterView, View view, int i, long l) {
-                //sport
-                /*
-                link.add("http://1.442244.info/it_rai_sport_1/index.m3u8");
-                link.add("http://1.442244.info/it_rai_sport_2/index.m3u8");
-                */
-                //news
+           myCountries.MyAlertDialog1(context,ITlink.get(i),ITPics.get(i));
 
 
 
-                //music
-
-
-                Intent intent = new Intent(context,Video.class);
-                intent.putExtra("link",((ITlink.get(i))));
-                context.startActivity(intent);
             }
         });
         myITList.setOnItemLongClickListener(new AdapterView.OnItemLongClickListener() {
             @Override
             public boolean onItemLongClick(AdapterView<?> parent, View view, int position, long id) {
-                myCountries.MyAlertDialog1(context,ITlink.get(position),ITPics1.get(position),ITPics1.get(position),ITlink.get(position));
                 return false;
             }
         });
@@ -100,10 +89,11 @@ public class ItalyChannels extends Fragment {
             public void handleResponse(BackendlessCollection<ItalyData> response) {
                 for (ItalyData item:response.getData()){
                     ITlink.add(item.ITChannel_Link);
-                    ITPics1.add(item.ITChannel_Pic);
+                    ITPics.add(item.ITChannel_Pic);
+                    ITNames.add(item.ITChannel_Name);
 
                 }
-                myITList.setAdapter(new MyCountryAdapter(context,ITPics1,ITlink));
+                myITList.setAdapter(new MyCountryAdapter(context,ITPics,ITNames));
             }
 
             @Override

@@ -19,10 +19,10 @@ import android.widget.Toast;
 import com.baoyz.widget.PullRefreshLayout;
 
 public class Fragmentcontainer extends AppCompatActivity {
-    FragmentManager fm;
-    FragmentTransaction ft;
-    LinearLayout conteiner;
-    ImageButton wifi;
+    private FragmentManager fm;
+    private FragmentTransaction ft;
+    private LinearLayout conteiner;
+    private ImageButton wifi;
     Context context;
 
     @Override
@@ -35,6 +35,7 @@ public class Fragmentcontainer extends AppCompatActivity {
     private void setPointer() {
         this.context = this;
         conteiner = (LinearLayout) findViewById(R.id.fcontainer);
+
         wifi = (ImageButton) findViewById(R.id.btnwifi);
         fm = getFragmentManager();
         ft = fm.beginTransaction();

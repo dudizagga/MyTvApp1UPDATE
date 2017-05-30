@@ -30,10 +30,9 @@ import java.util.ArrayList;
 public class MusicChannels extends Fragment {
 
     Context context;
-    ArrayList<String> link;
-    ArrayList<String> getMusicPics=new ArrayList<>();
-    ArrayList<String> getMusicNames=new ArrayList<>();
-    ArrayList<String> getMusicLinks=new ArrayList<>();
+    ArrayList<String> getMusicPics = new ArrayList<>();
+    ArrayList<String> getMusicLinks = new ArrayList<>();
+    ArrayList<String> getMusicNames = new ArrayList<>();
     MyCountries myCountries;
     public GridView listMusic;
 
@@ -42,46 +41,41 @@ public class MusicChannels extends Fragment {
     public View onCreateView(final LayoutInflater inflater, @Nullable final ViewGroup container, Bundle savedInstanceState) {
         context = container.getContext();
         Toast.makeText(context, "Music", Toast.LENGTH_SHORT).show();
-       getMusicData();
-        myCountries = new MyCountries();
+        getMusicData();
         // savedata();
+        myCountries = new MyCountries();
         View movInf = inflater.inflate(R.layout.activity_categories, container, false);
-           listMusic = (GridView) movInf.findViewById(R.id.TvShow);
+        listMusic = (GridView) movInf.findViewById(R.id.TvShow);
         listMusic.setOnItemClickListener(new AdapterView.OnItemClickListener() {
             @Override
             public void onItemClick(AdapterView<?> adapterView, View view, int i, long l) {
-
-
-
-                Intent intent = new Intent(context,Video.class);
-                intent.putExtra("link",getMusicLinks.get(i));
-                context.startActivity(intent);
-
+                myCountries.MyAlertDialog1(context,getMusicLinks.get(i),getMusicPics.get(i));
             }
 
         });
-listMusic.setOnItemLongClickListener(new AdapterView.OnItemLongClickListener() {
-    @Override
-    public boolean onItemLongClick(AdapterView<?> parent, View view, int position, long id) {
-        myCountries.MyAlertDialog2(context,getMusicLinks.get(position),getMusicPics.get(position));
-        return false;
-    }
-});
+        listMusic.setOnItemLongClickListener(new AdapterView.OnItemLongClickListener() {
+            @Override
+            public boolean onItemLongClick(AdapterView<?> parent, View view, int position, long id) {
+                return false;
+            }
+        });
+
         return movInf;
 
     }
-    private void getMusicData(){
+
+    private void getMusicData() {
         Backendless.Persistence.of(MusicData.class).find(new AsyncCallback<BackendlessCollection<MusicData>>() {
             @Override
             public void handleResponse(BackendlessCollection<MusicData> response) {
-                for (MusicData item:response.getData())
-                {
-                    getMusicNames.add(item.Music_Name);
+                for (MusicData item : response.getData()) {
+                    getMusicLinks.add(item.MusicChannel_Link);
                     getMusicPics.add(item.MusicChannel_Pic);
+                    getMusicNames.add(item.Music_Name);
                 }
 
-listMusic.setAdapter(new MyCountryAdapter(context,getMusicPics,getMusicNames));
-          return;
+                listMusic.setAdapter(new MyCountryAdapter(context, getMusicPics, getMusicNames));
+                return;
             }
 
             @Override
